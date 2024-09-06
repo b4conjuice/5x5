@@ -35,7 +35,7 @@ function calculatePlatesPerSide(weight: number) {
   const platesWeight = weight - BAR_WEIGHT
   const platesWeightPerSide = platesWeight / 2
   let currentWeight = platesWeightPerSide
-  const plates = plateWeights
+  const platesString = plateWeights
     .filter(plateWeight => plateWeight <= currentWeight)
     .reduce((prev, curr, index) => {
       const numberOfPlates = Math.floor(currentWeight / curr)
@@ -45,7 +45,7 @@ function calculatePlatesPerSide(weight: number) {
       }
       return prev
     }, '')
-  return plates
+  return platesString || 'empty'
 }
 
 export default function WarmupCalculator({ exercise }: { exercise: string }) {
@@ -53,32 +53,48 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
   const warmup = calculateWarmup(weight)
   if (!weight) return null
   return (
-    <div className='flex flex-col gap-4'>
-      <h2>{exercise}</h2>
-      <div>
-        <input
-          className='bg-cb-blue'
-          type='number'
-          value={weight}
-          onChange={e => {
-            setWeight(Number(e.target.value))
-          }}
-        />
+    <div className='bg-cb-blue flex flex-col gap-4 rounded p-4'>
+      <div className='flex items-center'>
+        <h2 className='grow'>{exercise}</h2>
+        <label className='flex items-center gap-2'>
+          weight
+          <input
+            className='bg-cb-blue w-20'
+            type='number'
+            value={weight}
+            onChange={e => {
+              setWeight(Number(e.target.value))
+            }}
+          />
+        </label>
       </div>
-      <div>progression: {(weight - BAR_WEIGHT) / PROGRESSION_INTERVAL}</div>
-      <ol className='list-decimal'>
-        {warmup.map(({ rounded, actual }, index) => (
-          <li key={index}>
-            <div>
-              weight: {rounded}
-              {rounded === actual ? '' : ` (${actual})`}
-            </div>
-            <div>plates weight (minus bar): {rounded - BAR_WEIGHT}</div>
-            <div>plates weight per side : {(rounded - BAR_WEIGHT) / 2}</div>
-            <div>plates: {calculatePlatesPerSide(rounded) || 'none'}</div>
-          </li>
-        ))}
-      </ol>
+      <details>
+        <summary>
+          <h3 className='inline'>warmup</h3>
+          <ol className='ms-4 list-decimal'>
+            {warmup.map(({ rounded }, index) => (
+              <li key={index}>
+                <span className='font-semibold'>{rounded}</span>:{' '}
+                {calculatePlatesPerSide(rounded)}
+              </li>
+            ))}
+          </ol>
+        </summary>
+        <div>progression: {(weight - BAR_WEIGHT) / PROGRESSION_INTERVAL}</div>
+        <ol className='ms-4 list-decimal'>
+          {warmup.map(({ rounded, actual }, index) => (
+            <li key={index}>
+              <div>
+                weight: {rounded}
+                {rounded === actual ? '' : ` (${actual})`}
+              </div>
+              <div>plates weight (minus bar): {rounded - BAR_WEIGHT}</div>
+              <div>plates weight per side : {(rounded - BAR_WEIGHT) / 2}</div>
+              <div>plates: {calculatePlatesPerSide(rounded)}</div>
+            </li>
+          ))}
+        </ol>
+      </details>
     </div>
   )
 }
