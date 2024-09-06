@@ -48,12 +48,13 @@ function calculatePlatesPerSide(weight: number) {
   return plates
 }
 
-export default function WarmupCalculator() {
-  const [weight, setWeight] = useLocalStorage('weight', 200)
+export default function WarmupCalculator({ exercise }: { exercise: string }) {
+  const [weight, setWeight] = useLocalStorage(`${exercise}-weight`, 200)
   const warmup = calculateWarmup(weight)
   if (!weight) return null
   return (
     <div className='flex flex-col gap-4'>
+      <h2>{exercise}</h2>
       <div>
         <input
           className='bg-cb-blue'
