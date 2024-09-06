@@ -1,0 +1,8 @@
+{
+  "name": "5x5",
+  "short_name": "5x5",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/"
+}
