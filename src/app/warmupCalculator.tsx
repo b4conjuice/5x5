@@ -73,6 +73,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
           />
         </label>
       </div>
+      <p>{calculatePlatesPerSide(weight)}</p>
       <details>
         <summary>
           <h3 className='inline'>warmup</h3>
