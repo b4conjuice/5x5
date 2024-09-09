@@ -51,7 +51,7 @@ function calculatePlatesPerSide(weight: number) {
 export default function WarmupCalculator({ exercise }: { exercise: string }) {
   const [weight, setWeight] = useLocalStorage(`${exercise}-weight`, 200)
   const warmup = calculateWarmup(weight)
-  if (!weight) return null
+  if (weight === undefined) return null
   return (
     <div className='bg-cb-blue flex flex-col gap-4 rounded p-4'>
       <div className='flex items-center'>
@@ -63,7 +63,12 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
             type='number'
             value={weight}
             onChange={e => {
-              setWeight(Number(e.target.value))
+              const newWeight = Number(e.target.value)
+              if (newWeight >= BAR_WEIGHT) {
+                setWeight(newWeight)
+              } else {
+                setWeight(BAR_WEIGHT)
+              }
             }}
           />
         </label>
