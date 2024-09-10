@@ -74,7 +74,12 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
           />
         </label>
       </div>
-      <p>{calculatePlatesPerSide(weight)}</p>
+      <p className='text-wrap'>
+        <span>
+          plates<span className='hidden md:inline'> per side</span>
+        </span>
+        : <span>{calculatePlatesPerSide(weight)}</span>
+      </p>
       <details>
         <summary>
           <h3 className='inline'>warmup</h3>
