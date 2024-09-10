@@ -53,7 +53,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
   const warmup = calculateWarmup(weight)
   if (weight === undefined) return null
   return (
-    <div className='bg-cb-blue flex flex-col gap-4 rounded p-4'>
+    <div className='bg-cb-blue flex flex-col gap-4 rounded-lg border-4 border-black p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]'>
       <div className='flex items-center'>
         <h2 className='grow'>{exercise}</h2>
         <label className='flex items-center gap-2'>
