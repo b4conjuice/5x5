@@ -62,6 +62,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
             className='bg-cb-blue w-20'
             type='number'
             value={weight}
+            step={5}
             onChange={e => {
               const newWeight = Number(e.target.value)
               if (newWeight > 0) {
