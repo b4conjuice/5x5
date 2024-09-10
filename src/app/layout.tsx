@@ -1,5 +1,7 @@
 import type { Viewport } from 'next'
+import { ToastContainer } from 'react-toastify'
 
+import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
 
 const DEFAULT_TITLE = '5x5'
@@ -28,6 +30,12 @@ export default function RootLayout({
     <html lang='en'>
       <body>
         <div className='bg-cb-dark-blue text-cb-white flex min-h-screen flex-col'>
+          <ToastContainer
+            autoClose={2000}
+            toastClassName='bg-cb-off-blue text-cb-white rounded-lg'
+            bodyClassName=''
+            pauseOnFocusLoss={false}
+          />
           {children}
         </div>
       </body>

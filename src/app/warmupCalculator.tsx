@@ -1,5 +1,7 @@
 'use client'
 
+import { toast } from 'react-toastify'
+
 import useLocalStorage from '@/lib/useLocalStorage'
 
 const BAR_WEIGHT = 45
@@ -68,6 +70,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
               if (newWeight > 0) {
                 setWeight(newWeight)
               } else {
+                toast.error('weight must be greater than 0')
                 setWeight(BAR_WEIGHT)
               }
             }}
