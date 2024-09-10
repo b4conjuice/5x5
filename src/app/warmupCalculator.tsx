@@ -64,7 +64,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
             value={weight}
             onChange={e => {
               const newWeight = Number(e.target.value)
-              if (newWeight >= BAR_WEIGHT) {
+              if (newWeight > 0) {
                 setWeight(newWeight)
               } else {
                 setWeight(BAR_WEIGHT)
