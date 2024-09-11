@@ -96,7 +96,7 @@ function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
               setChecked(defaultChecked)
             }}
           />
-          uncheck all
+          reset
         </label>
       )}
     </div>
