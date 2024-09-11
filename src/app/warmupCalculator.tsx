@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import classNames from 'classnames'
 import { toast } from 'react-toastify'
 
 import useLocalStorage from '@/lib/useLocalStorage'
@@ -33,6 +35,74 @@ function calculateWarmup(weight: number) {
 
 const plateWeights = [45, 25, 10, 5, 2.5]
 
+export function findLastIndex<T>(
+  array: Array<T>,
+  predicate: (value: T, index: number, obj: T[]) => boolean
+): number {
+  let l = array.length
+  while (l--) {
+    const item = array[l]
+    if (item !== undefined && predicate(item, l, array)) return l
+  }
+  return -1
+}
+
+function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
+  const defaultChecked = warmup.map(() => false)
+  const [checked, setChecked] = useState(defaultChecked)
+  const lastCheckedIndex = findLastIndex(checked, checked => checked)
+  return (
+    <div className='flex flex-col gap-3'>
+      <ul className='flex flex-col gap-3'>
+        {warmup.map(({ rounded }, index) => {
+          const disabled =
+            index > lastCheckedIndex + 1 || index <= lastCheckedIndex - 1
+          return (
+            <li key={index}>
+              <label
+                className={classNames(
+                  'flex items-center gap-2',
+                  disabled && 'opacity-50'
+                )}
+              >
+                <input
+                  type='checkbox'
+                  checked={checked[index]}
+                  onChange={() => {
+                    setChecked(prev =>
+                      prev.map((isChecked, i) =>
+                        i === index ? !isChecked : isChecked
+                      )
+                    )
+                  }}
+                  //
+                  disabled={disabled}
+                />
+                <span>
+                  <span className='font-semibold'>{rounded}</span>:{' '}
+                  {calculatePlatesPerSide(rounded)}
+                </span>
+              </label>
+            </li>
+          )
+        })}
+      </ul>
+      {checked.every(isChecked => isChecked) && (
+        <label className={classNames('flex items-center gap-2')}>
+          <input
+            type='checkbox'
+            defaultChecked
+            onChange={() => {
+              setChecked(defaultChecked)
+            }}
+          />
+          uncheck all
+        </label>
+      )}
+    </div>
+  )
+}
+
 function calculatePlatesPerSide(weight: number) {
   const platesWeight = weight - BAR_WEIGHT
   const platesWeightPerSide = platesWeight / 2
@@ -55,13 +125,13 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
   const warmup = calculateWarmup(weight)
   if (weight === undefined) return null
   return (
-    <div className='bg-cb-blue flex flex-col gap-4 rounded-lg border-4 border-black p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]'>
+    <div className='flex flex-col gap-4 rounded-lg border-4 border-black bg-cb-blue p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]'>
       <div className='flex items-center'>
         <h2 className='grow'>{exercise}</h2>
         <label className='flex items-center gap-2'>
           weight
           <input
-            className='bg-cb-blue w-20'
+            className='w-20 bg-cb-blue'
             type='number'
             value={weight}
             step={5}
@@ -86,14 +156,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
       <details>
         <summary>
           <h3 className='inline'>warmup</h3>
-          <ol className='ms-4 list-decimal'>
-            {warmup.map(({ rounded }, index) => (
-              <li key={index}>
-                <span className='font-semibold'>{rounded}</span>:{' '}
-                {calculatePlatesPerSide(rounded)}
-              </li>
-            ))}
-          </ol>
+          <Checklist warmup={warmup} />
         </summary>
         <div>progression: {(weight - BAR_WEIGHT) / PROGRESSION_INTERVAL}</div>
         <ol className='ms-4 list-decimal'>
