@@ -124,27 +124,50 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
   const [weight, setWeight] = useLocalStorage(`${exercise}-weight`, 200)
   const warmup = calculateWarmup(weight)
   if (weight === undefined) return null
+  const updateWeight = (newWeight: number) => {
+    if (newWeight > 0) {
+      setWeight(newWeight)
+    } else {
+      toast.error('weight must be greater than 0')
+      setWeight(BAR_WEIGHT)
+    }
+  }
   return (
     <div className='flex flex-col gap-4 rounded-lg border-4 border-black bg-cb-blue p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]'>
       <div className='flex items-center'>
         <h2 className='grow'>{exercise}</h2>
         <label className='flex items-center gap-2'>
           weight
-          <input
-            className='w-20 bg-cb-blue'
-            type='number'
-            value={weight}
-            step={5}
-            onChange={e => {
-              const newWeight = Number(e.target.value)
-              if (newWeight > 0) {
-                setWeight(newWeight)
-              } else {
-                toast.error('weight must be greater than 0')
-                setWeight(BAR_WEIGHT)
-              }
-            }}
-          />
+          <div className='flex gap-2'>
+            <button
+              className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+              type='button'
+              onClick={() => {
+                updateWeight(weight - 5)
+              }}
+            >
+              - 5
+            </button>
+            <input
+              className='w-20 bg-cb-blue'
+              type='number'
+              value={weight}
+              step={5}
+              onChange={e => {
+                const newWeight = Number(e.target.value)
+                updateWeight(newWeight)
+              }}
+            />
+            <button
+              className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+              type='button'
+              onClick={() => {
+                updateWeight(weight + 5)
+              }}
+            >
+              + 5
+            </button>
+          </div>
         </label>
       </div>
       <p className='text-wrap'>
