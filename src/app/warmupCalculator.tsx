@@ -35,7 +35,8 @@ function calculateWarmup(weight: number) {
 
 const plateWeights = [45, 25, 10, 5, 2.5]
 
-export function findLastIndex<T>(
+// source: https://stackoverflow.com/a/53187807/24617735
+function findLastIndex<T>(
   array: Array<T>,
   predicate: (value: T, index: number, obj: T[]) => boolean
 ): number {
