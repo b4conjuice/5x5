@@ -53,8 +53,8 @@ function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
   const [checked, setChecked] = useState(defaultChecked)
   const lastCheckedIndex = findLastIndex(checked, checked => checked)
   return (
-    <div className='flex flex-col gap-3'>
-      <ul className='flex flex-col gap-3'>
+    <div>
+      <ul>
         {warmup.map(({ rounded }, index) => {
           const disabled =
             index > lastCheckedIndex + 1 || index <= lastCheckedIndex - 1
@@ -62,8 +62,8 @@ function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
             <li key={index}>
               <label
                 className={classNames(
-                  'flex items-center gap-2',
-                  disabled && 'opacity-50'
+                  'flex items-center gap-2 py-2',
+                  disabled ? 'opacity-50' : 'hover:cursor-pointer'
                 )}
               >
                 <input
@@ -76,7 +76,6 @@ function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
                       )
                     )
                   }}
-                  //
                   disabled={disabled}
                 />
                 <span>
@@ -89,7 +88,7 @@ function Checklist({ warmup }: { warmup: Array<{ rounded: number }> }) {
         })}
       </ul>
       {checked.every(isChecked => isChecked) && (
-        <label className={classNames('flex items-center gap-2')}>
+        <label className='flex items-center gap-2 py-2'>
           <input
             type='checkbox'
             defaultChecked
