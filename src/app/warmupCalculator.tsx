@@ -8,6 +8,7 @@ import useLocalStorage from '@/lib/useLocalStorage'
 
 const BAR_WEIGHT = 45
 const PROGRESSION_INTERVAL = 4
+const PLATE_WEIGHTS = [45, 25, 10, 5, 2.5]
 
 function roundDownToNearest5(value: number) {
   return Math.floor(value / 5) * 5
@@ -32,8 +33,6 @@ function calculateWarmup(weight: number) {
 
   return roundedWarmup
 }
-
-const plateWeights = [45, 25, 10, 5, 2.5]
 
 // source: https://stackoverflow.com/a/53187807/24617735
 function findLastIndex<T>(
@@ -107,16 +106,16 @@ function calculatePlatesPerSide(weight: number) {
   const platesWeight = weight - BAR_WEIGHT
   const platesWeightPerSide = platesWeight / 2
   let currentWeight = platesWeightPerSide
-  const platesString = plateWeights
-    .filter(plateWeight => plateWeight <= currentWeight)
-    .reduce((prev, curr, index) => {
-      const numberOfPlates = Math.floor(currentWeight / curr)
-      if (numberOfPlates > 0) {
-        prev = `${prev}${index !== 0 ? ' / ' : ''}${curr} x ${numberOfPlates}`
-        currentWeight = currentWeight - curr * numberOfPlates
-      }
-      return prev
-    }, '')
+  const platesString = PLATE_WEIGHTS.filter(
+    plateWeight => plateWeight <= currentWeight
+  ).reduce((prev, curr, index) => {
+    const numberOfPlates = Math.floor(currentWeight / curr)
+    if (numberOfPlates > 0) {
+      prev = `${prev}${index !== 0 ? ' / ' : ''}${curr} x ${numberOfPlates}`
+      currentWeight = currentWeight - curr * numberOfPlates
+    }
+    return prev
+  }, '')
   return platesString || 'empty'
 }
 
