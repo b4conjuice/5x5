@@ -1,5 +1,10 @@
-import { Title } from '@/components/ui'
+'use client'
+
+import { useRouter } from 'next/navigation'
+import { Switch } from '@headlessui/react'
+
 import WarmupCalculator from '../app/warmupCalculator'
+import { Title } from '@/components/ui'
 import { workouts } from '@/lib/workouts'
 
 export default function Workout({
@@ -7,11 +12,29 @@ export default function Workout({
 }: {
   workout: keyof typeof workouts
 }) {
+  const router = useRouter()
   const exercises = workouts[workout]
   return (
     <>
-      <div className='flex'>
+      <div className='flex justify-between'>
         <Title>5x5</Title>
+        <div className='flex gap-2'>
+          <span>a</span>
+          <Switch
+            checked={workout === 'a'}
+            onChange={() => {
+              if (workout === 'a') {
+                router.push('/b')
+              } else {
+                router.push('/a')
+              }
+            }}
+            className='className="group data-[checked]:bg-blue-600" inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition'
+          >
+            <span className='size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6' />
+          </Switch>
+          <span>b</span>
+        </div>
       </div>
       <div className='grid gap-4 md:grid-cols-2'>
         {exercises.map(exercise => (
