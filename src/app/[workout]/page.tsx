@@ -15,7 +15,7 @@ export default function WorkoutPage({
   return (
     <Main className='flex flex-col p-4'>
       <div className='flex flex-grow flex-col space-y-4 md:items-center'>
-        <Workout workout={params.workout} />
+        <Workout workout={params.workout} toggleMethod='url' />
       </div>
     </Main>
   )
