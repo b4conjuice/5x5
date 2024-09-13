@@ -21,7 +21,7 @@ export default function Workout({
         <div className='flex gap-2'>
           <span>a</span>
           <Switch
-            checked={workout === 'a'}
+            checked={workout === 'b'}
             onChange={() => {
               if (workout === 'a') {
                 router.push('/b')
@@ -29,9 +29,9 @@ export default function Workout({
                 router.push('/a')
               }
             }}
-            className='className="group data-[checked]:bg-blue-600" inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition'
+            className='group inline-flex h-6 w-11 items-center rounded-full bg-cb-blue transition'
           >
-            <span className='size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6' />
+            <span className='size-4 translate-x-1 rounded-full bg-cb-yellow transition group-data-[checked]:translate-x-6' />
           </Switch>
           <span>b</span>
         </div>
