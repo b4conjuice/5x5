@@ -2,6 +2,12 @@
 
 import { useState } from 'react'
 import classNames from 'classnames'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/react'
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import { toast } from 'react-toastify'
 
 import useLocalStorage from '@/lib/useLocalStorage'
@@ -132,69 +138,95 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
     }
   }
   return (
-    <div className='flex flex-col gap-4 rounded-lg border-4 border-black bg-cb-blue p-4 shadow-[8px_8px_0_0_rgba(0,0,0,1)]'>
-      <div className='flex items-center'>
-        <h2 className='grow'>{exercise}</h2>
-        <label className='flex items-center gap-2'>
-          weight
-          <div className='flex gap-2'>
-            <button
-              className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
-              type='button'
-              onClick={() => {
-                updateWeight(weight - 5)
-              }}
-            >
-              - 5
-            </button>
-            <input
-              className='w-20 bg-cb-blue'
-              type='number'
-              value={weight}
-              step={5}
-              onChange={e => {
-                const newWeight = Number(e.target.value)
-                updateWeight(newWeight)
-              }}
-            />
-            <button
-              className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
-              type='button'
-              onClick={() => {
-                updateWeight(weight + 5)
-              }}
-            >
-              + 5
-            </button>
-          </div>
-        </label>
-      </div>
-      <p className='text-wrap'>
-        <span>
-          plates<span className='hidden md:inline'> per side</span>
-        </span>
-        : <span>{calculatePlatesPerSide(weight)}</span>
-      </p>
-      <details>
-        <summary>
-          <h3 className='inline'>warmup</h3>
-          <Checklist warmup={warmup} />
-        </summary>
-        <div>progression: {(weight - BAR_WEIGHT) / PROGRESSION_INTERVAL}</div>
-        <ol className='ms-4 list-decimal'>
-          {warmup.map(({ rounded, actual }, index) => (
-            <li key={index}>
-              <div>
-                weight: {rounded}
-                {rounded === actual ? '' : ` (${actual})`}
+    <Disclosure
+      as='div'
+      className='flex flex-col gap-4 rounded-lg border-4 border-black bg-cb-blue shadow-[8px_8px_0_0_rgba(0,0,0,1)]'
+      defaultOpen
+    >
+      {({ open }) => (
+        <>
+          <div className='flex items-center gap-4 border-b-4 border-black p-4'>
+            <div className='grow'>
+              <div className='flex items-center'>
+                <h2 className='grow'>{exercise}</h2>
+                <label className='flex items-center gap-2'>
+                  weight
+                  <div className='flex gap-2'>
+                    <button
+                      className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+                      type='button'
+                      onClick={() => {
+                        updateWeight(weight - 5)
+                      }}
+                    >
+                      - 5
+                    </button>
+                    <input
+                      className='w-20 bg-cb-blue'
+                      type='number'
+                      value={weight}
+                      step={5}
+                      onChange={e => {
+                        const newWeight = Number(e.target.value)
+                        updateWeight(newWeight)
+                      }}
+                    />
+                    <button
+                      className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+                      type='button'
+                      onClick={() => {
+                        updateWeight(weight + 5)
+                      }}
+                    >
+                      + 5
+                    </button>
+                  </div>
+                </label>
               </div>
-              <div>plates weight (minus bar): {rounded - BAR_WEIGHT}</div>
-              <div>plates weight per side : {(rounded - BAR_WEIGHT) / 2}</div>
-              <div>plates: {calculatePlatesPerSide(rounded)}</div>
-            </li>
-          ))}
-        </ol>
-      </details>
-    </div>
+              <p className='text-wrap'>
+                <span>
+                  plates<span className='hidden md:inline'> per side</span>
+                </span>
+                : <span>{calculatePlatesPerSide(weight)}</span>
+              </p>
+            </div>
+            <DisclosureButton>
+              <ChevronRightIcon
+                className={classNames(
+                  'h-6 w-6 text-cb-yellow transition-transform',
+                  open ? 'rotate-90 transform' : ''
+                )}
+              />
+            </DisclosureButton>
+          </div>
+          <DisclosurePanel className='px-4 pb-4'>
+            <details>
+              <summary>
+                <h3 className='inline'>warmup</h3>
+                <Checklist warmup={warmup} />
+              </summary>
+              <div>
+                progression: {(weight - BAR_WEIGHT) / PROGRESSION_INTERVAL}
+              </div>
+              <ol className='ms-4 list-decimal'>
+                {warmup.map(({ rounded, actual }, index) => (
+                  <li key={index}>
+                    <div>
+                      weight: {rounded}
+                      {rounded === actual ? '' : ` (${actual})`}
+                    </div>
+                    <div>plates weight (minus bar): {rounded - BAR_WEIGHT}</div>
+                    <div>
+                      plates weight per side : {(rounded - BAR_WEIGHT) / 2}
+                    </div>
+                    <div>plates: {calculatePlatesPerSide(rounded)}</div>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </DisclosurePanel>
+        </>
+      )}
+    </Disclosure>
   )
 }
