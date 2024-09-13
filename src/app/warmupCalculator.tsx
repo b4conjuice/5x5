@@ -150,10 +150,10 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
               <div className='flex items-center'>
                 <h2 className='grow'>{exercise}</h2>
                 <label className='flex items-center gap-2'>
-                  weight
-                  <div className='flex gap-2'>
+                  <span className='hidden md:inline'>weight</span>
+                  <div className='flex overflow-hidden rounded-lg border border-cb-white/50'>
                     <button
-                      className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+                      className='bg-cb-dusty-blue p-2 text-cb-yellow hover:bg-cb-dusty-blue/75 md:hidden'
                       type='button'
                       onClick={() => {
                         updateWeight(weight - 5)
@@ -162,7 +162,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
                       - 5
                     </button>
                     <input
-                      className='w-20 bg-cb-blue'
+                      className='w-20 border-none bg-cb-blue text-center'
                       type='number'
                       value={weight}
                       step={5}
@@ -172,7 +172,7 @@ export default function WarmupCalculator({ exercise }: { exercise: string }) {
                       }}
                     />
                     <button
-                      className='rounded-lg border border-[#6b7280] bg-cb-dusty-blue p-2 text-cb-yellow md:hidden'
+                      className='bg-cb-dusty-blue p-2 text-cb-yellow hover:bg-cb-dusty-blue/75 md:hidden'
                       type='button'
                       onClick={() => {
                         updateWeight(weight + 5)
