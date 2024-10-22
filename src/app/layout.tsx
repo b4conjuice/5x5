@@ -1,5 +1,6 @@
 import type { Viewport } from 'next'
 import { ToastContainer } from 'react-toastify'
+import { ViewTransitions } from 'next-view-transitions'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 import '@/styles/globals.css'
@@ -27,18 +28,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en'>
-      <body>
-        <div className='bg-cb-dark-blue text-cb-white flex min-h-screen flex-col'>
-          <ToastContainer
-            autoClose={2000}
-            toastClassName='bg-cb-off-blue text-cb-white rounded-lg'
-            bodyClassName=''
-            pauseOnFocusLoss={false}
-          />
-          {children}
-        </div>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang='en'>
+        <body>
+          <div className='flex min-h-screen flex-col bg-cb-dark-blue text-cb-white'>
+            <ToastContainer
+              autoClose={2000}
+              toastClassName='bg-cb-off-blue text-cb-white rounded-lg'
+              bodyClassName=''
+              pauseOnFocusLoss={false}
+            />
+            {children}
+          </div>
+        </body>
+      </html>
+    </ViewTransitions>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useTransitionRouter } from 'next-view-transitions'
 import { Switch } from '@headlessui/react'
 
 import WarmupCalculator from '../app/warmupCalculator'
@@ -15,7 +15,7 @@ export default function Workout({
   workout?: keyof typeof workouts
   toggleMethod?: 'url' | 'state'
 }) {
-  const router = useRouter()
+  const router = useTransitionRouter()
   const [workout, setWorkout] = useState(initialWorkout)
   const exercises = workouts[workout]
 

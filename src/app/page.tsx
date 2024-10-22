@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <Main className='flex flex-col p-4'>
       <div className='flex flex-grow flex-col space-y-4 md:items-center'>
-        <Workout toggleMethod='state' />
+        <Workout />
       </div>
     </Main>
   )
